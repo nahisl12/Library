@@ -8,14 +8,25 @@
 </head>
 <body>
     <header>
-        <h1>Book Database</h1>
+      <h1>Book Database</h1>
     </header>
     <main class="container">
-        <button>Add a book</button>
-        <form>
-
+        <form class="bookForm" target="_self">
+          <!-- Book name -->
+          <label for="bName">Book Title:</label><br>
+          <input required type="text" id="bName" name="bName"><br>
+          <!-- Author name -->
+          <label for="aName">Author Name:</label><br>
+          <input required type="text" id="aName" name="aName"><br>
+          <!-- Number of Pages -->
+          <label for="bPages">Pages:</label><br>
+          <input required type="number" id="bPages" name="bPages"><br>
+          <label for="bRead">Have you read the book?</label><br>
+          <input required type="checkbox" id="bRead" name="bRead"><br>
+          <input required type="button" value="submit" id="bSubmit"></input>
         </form>
     </main>
+    <div><button id="addBook">Add a book</button></div>
 
     <script src="main.js"></script>
 </body>
