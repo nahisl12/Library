@@ -7,3 +7,24 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.bookCards {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 2rem;
+    border: 1px red solid;
+}
+
+.bookCard {
+    padding: 2rem;
+}
+
+.bookCards button {
+    width: 50px;
+    height: 25px;
+}
+
+.exitBtn {
+    width: 150px;
+    height: 75px;
+}
