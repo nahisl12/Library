@@ -13,6 +13,7 @@ let deleteCard;
 let pExitBtn;
 let pPara;
 let popup;
+let itemId = []; // Holds the index of each and every book made in this for deleting
 
 form.style.display = "none";
 
@@ -28,6 +29,14 @@ function book(title, author, pages, read) {
     book.prototype.sayName = function() {
         return this.title;
     };  
+
+    book.prototype.hasRead = function(read) {
+      if(this.read == "read") {
+        this.read = "Read";
+      } else if(this.read == "notRead") {
+        this.read = "Not Read";
+      }
+    };
 }
 
 // Handles all logic for adding new book
@@ -35,7 +44,6 @@ function addBookToLibrary() {
   popup = document.createElement('div');
   // check for if all details have been filled out
   if(bookName == "" || bookAuthor == "" || bookPages == ""){
-    console.log("enter all details");
     popup.classList.add('warning');
     pPara = document.createElement('p')
     pPara.textContent = "Enter all details";
@@ -50,7 +58,8 @@ function addBookToLibrary() {
     });
   } else {
     newBook = new book(bookName, bookAuthor, bookPages, bookRead);
-    myLibrary.push(newBook); // pushes the new book into array
+    newBook.hasRead();
+    itemId.push(myLibrary.push(newBook)-1); // pushes the new book into the library array and also the index to the itemId array
     bookCards.innerHTML=""; // clears the card div
     render();
     form.reset(); // Clears the form after everything is executed
@@ -60,8 +69,7 @@ function addBookToLibrary() {
 function render() {
   // Better way to do this might be to only print the last element of the array each time
     for(let i = 0; i < myLibrary.length; i++){
-      console.log(myLibrary[i]);
-
+      // Logic for creating the card
       bookCard = document.createElement('div');
       bookCard.classList.add('bookCard');
       let p1 = document.createElement('p');
@@ -70,33 +78,28 @@ function render() {
       p2.textContent = myLibrary[i].author;
       let p3 = document.createElement('p');
       p3.textContent = myLibrary[i].pages;
+      let p4 = document.createElement('p');
+      p4.textContent = myLibrary[i].read;
       deleteCard = document.createElement('button');
       deleteCard.textContent = "Delete!";
       bookCard.appendChild(p1);
       bookCard.appendChild(p2);
       bookCard.appendChild(p3);
+      bookCard.appendChild(p4);
+      bookCard.appendChild(deleteCard);
       bookCards.appendChild(bookCard);
-      bookCards.appendChild(deleteCard);
 
       // Card deleting function
       deleteCard.addEventListener('click', () => {
-        console.log("Working");
-        // let position = myLibrary.findIndex(obj => obj.title == title);
-        let pos = myLibrary.findIndex(i);
-        myLibrary.splice(pos, 1);
+        let index = itemId[i];  // Sets the index to the position of whatever btn is pressed in the array
+        myLibrary.splice(index, 1); // Removes element from array
+        bookCards.innerHTML="";
+        render();
       });
     }
 }
 
-// Draws the new book details to the screen
-function card(t, a, p)
-{
-  this.t = t;
-  this.a = a;
-  this.p = p;
-}
-
-// Submit button
+// Submit button - Takes all the values in the form and calls the createbook function with them
 submitBtn.addEventListener('click', () => {
   bookName = document.getElementById("bName").value;
   bookAuthor = document.getElementById("aName").value;
@@ -111,8 +114,10 @@ addBook.addEventListener('click', () => {
   form.style.display = "block";
 });
 
-testBook = new book("dune", "herbert", 185, true);
-myLibrary.push(testBook);
-testBook2 = new book("The Shining", "King", 900, true);
-myLibrary.push(testBook2);
+testBook = new book("dune", "herbert", 185, "read");
+testBook.hasRead();
+itemId.push(myLibrary.push(testBook) -1);
+testBook2 = new book("The Shining", "King", 900, "notRead");
+testBook2.hasRead();
+itemId.push(myLibrary.push(testBook2) -1);
 render();
