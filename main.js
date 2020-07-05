@@ -18,8 +18,6 @@ let pPara;
 let popup;
 let itemId = []; // Holds the index of each and every book made in this for deleting
 
-form.style.display = "none";
-
 // Logic for adding/creating/deleting book etc
 let myLibrary = [];
 
@@ -48,9 +46,11 @@ function addBookToLibrary() {
   // check for if all details have been filled out
   if(bookName == "" || bookAuthor == "" || bookPages == ""){
     popup.classList.add('warning');
-    pPara = document.createElement('p')
+    pPara = document.createElement('p');
     pPara.textContent = "Enter all details";
+    pPara.classList.add('warningBox');
     pExitBtn = document.createElement('button');
+    pExitBtn.textContent = "X";
     pExitBtn.classList.add('exitBtn');
     popup.appendChild(pExitBtn);
     popup.appendChild(pPara);
@@ -63,7 +63,7 @@ function addBookToLibrary() {
     newBook = new book(bookName, bookAuthor, bookPages, bookRead);
     newBook.hasRead();
     itemId.push(myLibrary.push(newBook)-1); // pushes the new book into the library array and also the index to the itemId array
-    bookCards.innerHTML=""; // clears the card div
+    clearArea(); // clears the card div
     render();
     form.reset(); // Clears the form after everything is executed
   }
@@ -75,21 +75,37 @@ function render() {
       // Logic for creating the card
       bookCard = document.createElement('div');
       bookCard.classList.add('bookCard');
+      let newL = document.createElement('p');
+      newL.textContent = "Title:";
+      newL.classList.add('bookDesc');
       let p1 = document.createElement('p');
       p1.textContent = myLibrary[i].title;
+      let newL2 = document.createElement('p');
+      newL2.textContent = "Author:";
+      newL2.classList.add('bookDesc');
       let p2 = document.createElement('p');
       p2.textContent = myLibrary[i].author;
+      let newL3 = document.createElement('p');
+      newL3.textContent = "Pages:";
+      newL3.classList.add('bookDesc');
       let p3 = document.createElement('p');
       p3.textContent = myLibrary[i].pages;
+      let newL4 = document.createElement('p');
+      newL4.textContent = "Status:";
+      newL4.classList.add('bookDesc');
       let p4 = document.createElement('p');
       p4.textContent = myLibrary[i].read;
       deleteCard = document.createElement('button');
       deleteCard.textContent = "Delete!";
       changeStatus = document.createElement('button');
       changeStatus.textContent = "Status";
+      bookCard.appendChild(newL);
       bookCard.appendChild(p1);
+      bookCard.appendChild(newL2);
       bookCard.appendChild(p2);
+      bookCard.appendChild(newL3);
       bookCard.appendChild(p3);
+      bookCard.appendChild(newL4);
       bookCard.appendChild(p4);
       bookCard.appendChild(changeStatus);
       bookCard.appendChild(deleteCard);
@@ -99,18 +115,19 @@ function render() {
       deleteCard.addEventListener('click', () => {
         let index = itemId[i];  // Sets the index to the position of whatever btn is pressed in the array
         myLibrary.splice(index, 1); // Removes element from array
-        bookCards.innerHTML="";
+        clearArea();
         render();
       });
 
+      // Toggles read status on press
       changeStatus.addEventListener('click', () => {
         if(myLibrary[i].read == "Read") {
           myLibrary[i].read = "Not Read";
-          bookCards.innerHTML="";
+          clearArea();
           render();
         } else {
           myLibrary[i].read = "Read";
-          bookCards.innerHTML="";
+          clearArea();
           render();
         }
 
@@ -130,13 +147,18 @@ submitBtn.addEventListener('click', () => {
 
 // Pops up the form when pressed
 addBook.addEventListener('click', () => {
-  form.style.display = "block";
+  form.style.display = "flex";
+  form.style.position = "absolute";
 });
 
-testBook = new book("dune", "herbert", 185, "read");
+function clearArea() {
+  bookCards.innerHTML="";
+}
+
+testBook = new book("Dune", "herbert", 185, "read");
 testBook.hasRead();
 itemId.push(myLibrary.push(testBook) -1);
-testBook2 = new book("The Shining", "King", 900, "notRead");
+testBook2 = new book("The Shining", "Stephen King", 900, "notRead");
 testBook2.hasRead();
 itemId.push(myLibrary.push(testBook2) -1);
 render();
