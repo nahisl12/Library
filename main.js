@@ -4,12 +4,15 @@ let addBook = document.querySelector('#addBook');
 let form = document.querySelector('.bookForm');
 let submitBtn = document.querySelector('#bSubmit');
 let bookCards = document.querySelector('.bookCards');
+
+// Variables for creating html elements & holding dom values 
 let bookName;
 let bookAuthor;
 let bookPages;
 let bookRead;
 let bookCard;
 let deleteCard;
+let changeStatus;
 let pExitBtn;
 let pPara;
 let popup;
@@ -82,10 +85,13 @@ function render() {
       p4.textContent = myLibrary[i].read;
       deleteCard = document.createElement('button');
       deleteCard.textContent = "Delete!";
+      changeStatus = document.createElement('button');
+      changeStatus.textContent = "Status";
       bookCard.appendChild(p1);
       bookCard.appendChild(p2);
       bookCard.appendChild(p3);
       bookCard.appendChild(p4);
+      bookCard.appendChild(changeStatus);
       bookCard.appendChild(deleteCard);
       bookCards.appendChild(bookCard);
 
@@ -95,6 +101,19 @@ function render() {
         myLibrary.splice(index, 1); // Removes element from array
         bookCards.innerHTML="";
         render();
+      });
+
+      changeStatus.addEventListener('click', () => {
+        if(myLibrary[i].read == "Read") {
+          myLibrary[i].read = "Not Read";
+          bookCards.innerHTML="";
+          render();
+        } else {
+          myLibrary[i].read = "Read";
+          bookCards.innerHTML="";
+          render();
+        }
+
       });
     }
 }
